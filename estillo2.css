@@ -1,0 +1,23 @@
+body {
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+    background-color: #92f896 ; 
+    margin: 0;
+    padding: 0;
+}
+h {
+    col3030303;
+    margin: 20px 0;
+    font-size: 36px; 
+    text-align: center
+}
+h2 {
+    col3030303;
+    margin: 20px 0;
+    font-size: 36px; 
+    text-align: center
+}
+.imagen-ajustada {
+    width: 100px; /* Ajustar el ancho a 300 píxeles */
+    height: auto; /* Mantener la proporción de la imagen */
+}

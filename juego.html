@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<title>juegodeidiomas</title>
+<head>
+    <h>holaaa, aprende conmigo!!</h>
+    <link rel="stylesheet" href="estilo.css">
+    <style>
+        .game-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .question {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .answer-input, .option-btn {
+            margin: 10px 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .score {
+            margin-top: 10px;
+            font-size: 18px;
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <img src="gato.png" width="300">
+    <p>
+        <h1>hello guys, esta página esta diseñada para aprender idiomas de manera easyy,</h1>
+        <p>gracias por su atención</p>
+    </p>
+    <img src="gato2.png" width="200" class="imagen-izquierda">
+    <h1>menú de opciones</h1>
+    <h1><p><a href="portugues.html">portugués</a></h1>
+    <h1><p><a href="voz.html">voz a texto</a><p></h1>
+    <h1><p><a href="ingles.html">ingles</a><p></h1>
+    <img src="gatob.gif" width="400">
+
+    <h1>Esta página está hecha para el proyecto de la materia análisis del lenguaje natural</h1>
+    <p>¿Cómo están?</p>
+
+    <!-- Math Game Section -->
+    <div class="game-container">
+        <h2>Juego de Matemáticas</h2>
+        <p class="question" id="question"></p>
+        <input type="number" class="answer-input" id="answer" placeholder="Escribe tu respuesta aquí">
+        <button class="submit-btn" onclick="checkAnswer()">Responder</button>
+        <p class="score" id="score">Puntaje: 0</p>
+        <p id="feedback"></p>
+    </div>
+
+    <!-- English Trivia Game Section -->
+    <div class="game-container">
+        <h2>Juego de Inglés</h2>
+        <p class="question" id="english-question"></p>
+        <div id="options-container"></div>
+        <p class="score" id="english-score">Puntaje: 0</p>
+        <p id="english-feedback"></p>
+    </div>
+
+    <script>
+        // Math Game Logic
+        let score = 0;
+        let currentAnswer;
+
+        function generateQuestion() {
+            const num1 = Math.floor(Math.random() * 10) + 1;
+            const num2 = Math.floor(Math.random() * 10) + 1;
+            const operations = ['+', '-', '*', '/'];
+            const operation = operations[Math.floor(Math.random() * operations.length)];
+
+            let question;
+            switch (operation) {
+                case '+':
+                    question = `${num1} + ${num2}`;
+                    currentAnswer = num1 + num2;
+                    break;
+                case '-':
+                    question = `${num1} - ${num2}`;
+                    currentAnswer = num1 - num2;
+                    break;
+                case '*':
+                    question = `${num1} * ${num2}`;
+                    currentAnswer = num1 * num2;
+                    break;
+                case '/':
+                    question = `${num1 * num2} / ${num2}`;
+                    currentAnswer = num1;
+                    break;
+            }
+
+            document.getElementById('question').innerText = question;
+        }
+
+        function checkAnswer() {
+            const userAnswer = parseFloat(document.getElementById('answer').value);
+            const feedback = document.getElementById('feedback');
+
+            if (userAnswer === currentAnswer) {
+                score++;
+                feedback.innerText = "¡Correcto! 🎉";
+                feedback.style.color = "green";
+            } else {
+                feedback.innerText = "Incorrecto. Inténtalo de nuevo. 😢";
+                feedback.style.color = "red";
+            }
+
+            document.getElementById('score').innerText = `Puntaje: ${score}`;
+            document.getElementById('answer').value = '';
+            generateQuestion();
+        }
+
+        // Generate the first math question when the page loads
+        window.onload = generateQuestion;
+
+        // English Trivia Game Logic
+        const englishQuestions = [
+            {
+                question: "What is the plural form of 'mouse'?",
+                options: ["mouses", "mouse", "mice", "moose"],
+                correct: "mice"
+            },
+            {
+                question: "Which word is a synonym for 'happy'?",
+                options: ["sad", "content", "angry", "blue"],
+                correct: "content"
+            },
+            {
+                question: "What is the past tense of 'go'?",
+                options: ["goes", "gone", "went", "going"],
+                correct: "went"
+            },
+            {
+                question: "Choose the correct article: '___ apple is red.'",
+                options: ["A", "An", "The", "No article"],
+                correct: "An"
+            },
+            {
+                question: "Which word is spelled correctly?",
+                options: ["recieve", "receive", "recive", "reseve"],
+                correct: "receive"
+            }
+        ];
+
+        let englishScore = 0;
+        let currentEnglishIndex = 0;
+
+        function loadEnglishQuestion() {
+            const questionContainer = document.getElementById("english-question");
+            const optionsContainer = document.getElementById("options-container");
+            optionsContainer.innerHTML = "";
+
+            const currentQuestion = englishQuestions[currentEnglishIndex];
+            questionContainer.innerText = currentQuestion.question;
+
+            currentQuestion.options.forEach(option => {
+                const button = document.createElement("button");
+                button.innerText = option;
+                button.classList.add("option-btn");
+                button.onclick = () => checkEnglishAnswer(option, currentQuestion.correct);
+                optionsContainer.appendChild(button);
+            });
+        }
+
+        function checkEnglishAnswer(selected, correct) {
+            const feedback = document.getElementById("english-feedback");
+            if (selected === correct) {
+                englishScore++;
+                feedback.innerText = "¡Correcto! 🎉";
+                feedback.style.color = "green";
+            } else {
+                feedback.innerText = "Incorrecto. La respuesta correcta es: " + correct + ". 😢";
+                feedback.style.color = "red";
+            }
+
+            document.getElementById("english-score").innerText = `Puntaje: ${englishScore}`;
+            currentEnglishIndex++;
+
+            if (currentEnglishIndex < englishQuestions.length) {
+                loadEnglishQuestion();
+            } else {
+                feedback.innerText += " ¡Juego terminado! 🎉";
+            }
+        }
+
+        // Load the first English question when the page loads
+        loadEnglishQuestion();
+    </script>
+</body>
+</html>
+
